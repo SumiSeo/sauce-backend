@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.params import Body
 from pydantic import BaseModel
 from typing import Optional
@@ -43,12 +43,12 @@ def find_post(id):
         if post["id"] == id:
             return post
         
-    return None
-        
         
 @app.get("/post/{id}")
-def get_posts(id:int):
+def get_post(id:int, response:Response):
     data = find_post(id)
+    if not data:
+        response.status_code = 404
     return {"data":data}
 
 
